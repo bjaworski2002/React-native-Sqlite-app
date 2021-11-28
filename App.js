@@ -7,6 +7,7 @@ import * as Font from "expo-font";
 
 import Main from "./components/Main"
 import ClockList from "./components/ClockList";
+import AddClock from "./components/AddClock";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -24,6 +25,16 @@ export default function App() {
                 <Stack.Screen name="main" component={Main} options={{headerShown: false}}/>
                 <Stack.Screen name="clocklist" component={ClockList} options={{
                     title: "Lista Budzików",
+                    headerStyle: {
+                        backgroundColor: "#9050FF",
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontFamily: 'Regular'
+                    },
+                }}/>
+                <Stack.Screen name="addClock" component={AddClock} options={{
+                    title: "Dodaj budzik",
                     headerStyle: {
                         backgroundColor: "#9050FF",
                     },
