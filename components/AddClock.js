@@ -1,11 +1,16 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, LogBox} from 'react-native';
 import Database from "./functions/Database";
+
+LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+]);
+
 export default function AddClock(props){
     return(<View style={styles.cont}>
         <Text style={styles.subText}>"+" dodaje do bazy budzik z godziną 00:00</Text>
         <TouchableOpacity style={styles.addButton} onPress={() => {
-            props.addHandle
+            props.route.params.addHandle()
             props.navigation.pop()
         }}>
             <View>
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 40,
-        backgroundColor: "#902040",
+        backgroundColor: "#C71585",
         position: "absolute",
         top: Dimensions.get("window").height * 0.7,
         alignItems: 'center',

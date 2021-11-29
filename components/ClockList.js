@@ -24,14 +24,20 @@ export default function ClockList(props){
         Database.add()
         Database.getAll().then(all => setClocks(JSON.parse(all).rows._array))
     }
+    const removeHandleByKey = (key) => {
+        Database.removeByKey(key)
+        Database.getAll().then(all => setClocks(JSON.parse(all).rows._array))
+    }
     return(
         <View style={styles.cont}>
             {/*<TouchableOpacity onPress={() => Database.add()}><Text>essa</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => Database.getAll().then(all => console.log(all))}><Text>essa2</Text></TouchableOpacity>*/}
             <ScrollView>
-                <ListItems clocks={clocks}/>
+                <ListItems clocks={clocks} removeHandleByKey={(key) => removeHandleByKey(key)}/>
             </ScrollView>
-            <TouchableOpacity style={styles.addButton} onPress={() => props.navigation.navigate("addClock", {addHandle: addHandle()})}>
+            <TouchableOpacity style={styles.addButton} onPress={() => props.navigation.navigate("addClock", {
+                addHandle: () => addHandle(),
+            })}>
                 <View>
                     <Image style={styles.img} source={require('../assets/plus.png')}/>
                 </View>
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 40,
-        backgroundColor: "#902040",
+        backgroundColor: "#C71585",
         position: "absolute",
         top: Dimensions.get("window").height * 0.7,
         alignItems: 'center',

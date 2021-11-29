@@ -10,15 +10,13 @@ class Database {
 
         });
     }
-
     static add() {
         db.transaction(
             tx => {
-                tx.executeSql("INSERT INTO alerts (hour, monday, tuesday, wednesday, thursday, friday, saturday, sunday, active) values ('00:00', 0, 0, 0, 0, 0, 0, 0, 0)");
+                tx.executeSql("INSERT INTO alerts (hour, monday, tuesday, wednesday, thursday, friday, saturday, sunday, active) values ('00:00', 0, 0, 0, 0, 0, 0, 0, 1)");
             },
         )
     }
-
     static getAll() {
         const query = "SELECT * FROM alerts";
         return new Promise((resolve, reject) => db.transaction((tx) => {
@@ -30,7 +28,11 @@ class Database {
             });
         }))
     }
-
+    static removeByKey(key){
+        db.transaction(tx => {
+            tx.executeSql(`DELETE FROM alerts WHERE id = ${key}`)
+        })
+    }
     static remove() {
         db.transaction(tx => {
             tx.executeSql("DELETE FROM alerts;");
