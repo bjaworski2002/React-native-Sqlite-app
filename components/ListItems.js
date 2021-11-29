@@ -23,12 +23,12 @@ const Item = (props) => {
             <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
                 <View><Text style={styles.subText}>{props.el.hour} </Text></View>
                 <View><Switch value={props.el.active === 1} onValueChange={() => {
-                    Database.setValue(props.index + 1, 'active', props.el.active === 1 ? 0 : 1)
+                    Database.setValue(props.el.id, 'active', props.el.active === 1 ? 0 : 1)
                     props.reload()
                 }}/></View>
             </View>
             <View style={{paddingTop: 20, flexDirection: "row", justifyContent: "space-between"}}>
-                <TouchableOpacity style={{width: 30}} onPress={() => props.removeHandleByKey(props.index + 1)}>
+                <TouchableOpacity style={{width: 30}} onPress={() => props.removeHandleByKey(props.el.id)}>
                     <Image source={require('../assets/bin.png')} style={styles.img}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={{width: 30}} onPress={() => {
@@ -56,7 +56,7 @@ const Item = (props) => {
             }}>
                 {weeksDay.map((e, i) => <View key={i}>
                     <TouchableOpacity onPress={() => {
-                        Database.setValue(props.index + 1, e, props.el[e] === 1 ? 0 : 1)
+                        Database.setValue(props.el.id, e, props.el[e] === 1 ? 0 : 1)
                         props.reload()
                     }}>
                         <Text style={[styles.miniText, {
