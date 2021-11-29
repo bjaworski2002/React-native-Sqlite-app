@@ -33,7 +33,7 @@ export default function ClockList(props){
             {/*<TouchableOpacity onPress={() => Database.add()}><Text>essa</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => Database.getAll().then(all => console.log(all))}><Text>essa2</Text></TouchableOpacity>*/}
             <ScrollView>
-                <ListItems clocks={clocks} removeHandleByKey={(key) => removeHandleByKey(key)}/>
+                <ListItems clocks={clocks} removeHandleByKey={(key) => removeHandleByKey(key)} reload={() => Database.getAll().then(all => setClocks(JSON.parse(all).rows._array))}/>
             </ScrollView>
             <TouchableOpacity style={styles.addButton} onPress={() => props.navigation.navigate("addClock", {
                 addHandle: () => addHandle(),

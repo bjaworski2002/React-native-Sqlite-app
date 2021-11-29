@@ -17,6 +17,13 @@ class Database {
             },
         )
     }
+    static setValue(index, key, value) {
+        db.transaction(
+            tx => {
+                tx.executeSql(`UPDATE alerts SET ${key} = ${value} where id = ${index}`);
+            },
+        )
+    }
     static getAll() {
         const query = "SELECT * FROM alerts";
         return new Promise((resolve, reject) => db.transaction((tx) => {
@@ -39,6 +46,7 @@ class Database {
         });
 
     }
+
 }
 
 export default Database
