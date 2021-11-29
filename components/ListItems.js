@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Animated} from 'react-native';
 import {Switch} from "react-native-paper";
 import Database from "./functions/Database";
@@ -14,6 +14,10 @@ const Item = (props) => {
         inputRange: [0, 1],
         outputRange: [0, 1]
     })
+    useEffect(() => {
+        console.log(props.el)
+    })
+    const weeksDay = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     return (
         <View style={styles.innerCont}>
             <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
@@ -44,11 +48,22 @@ const Item = (props) => {
             <Animated.View style={{
                 transform: [{scale: HeightInterpolate}],
                 height: 50,
-                backgroundColor: 'red',
                 display: val ? "none" : "block",
                 marginTop: 20,
+                flexDirection: "row",
+                alignItems: 'center',
+                justifyContent: "space-around"
             }}>
-
+                {weeksDay.map((e, i) => <View key={i}>
+                    <TouchableOpacity onPress={() => {
+                        Database.setValue(props.index + 1, e, props.el[e] === 1 ? 0 : 1)
+                        props.reload()
+                    }}>
+                        <Text style={[styles.miniText, {
+                            backgroundColor: props.el[e] === 1 ? "green" : "transparent"
+                        }]}>{e.substring(0, 2)}</Text>
+                    </TouchableOpacity>
+                </View>)}
             </Animated.View>
         </View>
     )
@@ -68,10 +83,17 @@ const styles = StyleSheet.create({
         padding: 5,
 
     },
+    miniText: {
+        color: "#fff",
+        fontSize: 20,
+        fontFamily: "Light",
+        padding: 5,
+
+    },
     innerCont: {
         flex: 1,
         width: Dimensions.get("window").width * 0.8,
-        paddingBottom: 40,
+        paddingBottom: 20,
         borderBottomWidth: 1,
         borderBottomColor: "#DD10DD"
     },
