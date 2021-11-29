@@ -3,30 +3,63 @@ import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Animated} f
 import {Switch} from "react-native-paper";
 import Database from "./functions/Database";
 
-function ListItems(props) {
-
-    return (<View>
-        {props.clocks.map((key, index) => <View style={styles.innerCont} key={index}>
+const Item = (props) => {
+    const [visible] = useState(new Animated.Value(1))
+    const [val, setVal] = useState(false)
+    const RotateInterpolate = visible.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "180deg"]
+    })
+    const HeightInterpolate = visible.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1]
+    })
+    return (
+        <View style={styles.innerCont}>
             <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
-                <View><Text style={styles.subText}>{key.hour} </Text></View>
-                <View><Switch value={key.active === 1} onValueChange={() => {
-                    Database.setValue(index + 1, 'active', key.active === 1 ? 0 : 1)
+                <View><Text style={styles.subText}>{props.el.hour} </Text></View>
+                <View><Switch value={props.el.active === 1} onValueChange={() => {
+                    Database.setValue(props.index + 1, 'active', props.el.active === 1 ? 0 : 1)
                     props.reload()
                 }}/></View>
             </View>
             <View style={{paddingTop: 20, flexDirection: "row", justifyContent: "space-between"}}>
-                <TouchableOpacity style={{width: 30}} onPress={() => props.removeHandleByKey(index + 1)}>
+                <TouchableOpacity style={{width: 30}} onPress={() => props.removeHandleByKey(props.index + 1)}>
                     <Image source={require('../assets/bin.png')} style={styles.img}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: 30}}>
-                    <Image source={require('../assets/triangle.png')} style={[styles.img, {
-
+                <TouchableOpacity style={{width: 30}} onPress={() => {
+                    Animated.timing(visible, {
+                        toValue: val ? 1 : 0,
+                        duration: 100,
+                        useNativeDriver: true
+                    }).start()
+                    setVal(!val)
+                    console.log(RotateInterpolate)
+                }}>
+                    <Animated.Image source={require('../assets/triangle.png')} style={[styles.img, {
+                        transform: [{rotateX: RotateInterpolate}]
                     }]}/>
                 </TouchableOpacity>
             </View>
-        </View>)}
+            <Animated.View style={{
+                transform: [{scale: HeightInterpolate}],
+                height: 50,
+                backgroundColor: 'red',
+                display: val ? "none" : "block",
+                marginTop: 20,
+            }}>
+
+            </Animated.View>
+        </View>
+    )
+}
+
+function ListItems(props) {
+    return (<View>
+        {props.clocks.map((key, index) => <Item el={key} index={index} key={index} {...props}/>)}
     </View>)
 }
+
 const styles = StyleSheet.create({
     subText: {
         color: "#fff",
@@ -38,6 +71,9 @@ const styles = StyleSheet.create({
     innerCont: {
         flex: 1,
         width: Dimensions.get("window").width * 0.8,
+        paddingBottom: 40,
+        borderBottomWidth: 1,
+        borderBottomColor: "#DD10DD"
     },
     img: {
         width: 30,
