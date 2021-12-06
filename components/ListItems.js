@@ -14,9 +14,8 @@ const Item = (props) => {
         inputRange: [0, 1],
         outputRange: [0, 1]
     })
-    useEffect(() => {
-        console.log(props.el)
-    })
+
+    useEffect(()=>{ console.log(HeightInterpolate)},[HeightInterpolate])
     const weeksDay = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     return (
         <View style={styles.innerCont}>
@@ -38,17 +37,15 @@ const Item = (props) => {
                         useNativeDriver: true
                     }).start()
                     setVal(!val)
-                    console.log(RotateInterpolate)
                 }}>
                     <Animated.Image source={require('../assets/triangle.png')} style={[styles.img, {
                         transform: [{rotateX: RotateInterpolate}]
                     }]}/>
                 </TouchableOpacity>
             </View>
-            <Animated.View style={{
+            {!val ? <Animated.View style={{
                 transform: [{scale: HeightInterpolate}],
                 height: 50,
-                display: val ? "none" : "block",
                 marginTop: 20,
                 flexDirection: "row",
                 alignItems: 'center',
@@ -64,7 +61,7 @@ const Item = (props) => {
                         }]}>{e.substring(0, 2)}</Text>
                     </TouchableOpacity>
                 </View>)}
-            </Animated.View>
+            </Animated.View> : null}
         </View>
     )
 }
