@@ -10,10 +10,11 @@ class Database {
 
         });
     }
-    static add() {
+    static add(value) {
+        console.log(value)
         db.transaction(
             tx => {
-                tx.executeSql("INSERT INTO alerts (hour, monday, tuesday, wednesday, thursday, friday, saturday, sunday, active) values ('00:00', 0, 0, 1, 1, 0, 0, 0, 1)");
+                tx.executeSql(`INSERT INTO alerts (hour, monday, tuesday, wednesday, thursday, friday, saturday, sunday, active) values ("${value}", 0, 0, 1, 1, 0, 0, 0, 1)`);
             },
         )
     }

@@ -57,7 +57,8 @@ export default function AddClock(props) {
         </View>
         <View style={{flex: 1.5}}/>
         <TouchableOpacity style={styles.addButton} onPress={() => {
-            props.route.params.addHandle()
+            console.log(`${hours}:${minutes}`)
+            props.route.params.addHandle(`${hours < 10 ? 0 : ''}${hours}:${minutes < 10 ? 0 : ''}${minutes}`)
             props.navigation.pop()
         }}>
             <View>

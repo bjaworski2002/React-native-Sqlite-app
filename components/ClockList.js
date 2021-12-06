@@ -16,12 +16,13 @@ export default function ClockList(props){
         });
 
         Database.createTable();
-        Database.add()
+        Database.add('12:30')
         Database.getAll().then(all => setClocks(JSON.parse(all).rows._array))
 
     }, [])
-    const addHandle = () => {
-        Database.add()
+    const addHandle = (val) => {
+        console.log(val)
+        Database.add(val)
         Database.getAll().then(all => setClocks(JSON.parse(all).rows._array))
     }
     const removeHandleByKey = (key) => {
@@ -36,7 +37,7 @@ export default function ClockList(props){
                 <ListItems clocks={clocks} removeHandleByKey={(key) => removeHandleByKey(key)} reload={() => Database.getAll().then(all => setClocks(JSON.parse(all).rows._array))}/>
             </ScrollView>
             <TouchableOpacity style={styles.addButton} onPress={() => props.navigation.navigate("addClock", {
-                addHandle: () => addHandle(),
+                addHandle: (value) => addHandle(value),
             })}>
                 <View>
                     <Image style={styles.img} source={require('../assets/plus.png')}/>
