@@ -15,7 +15,6 @@ const Item = (props) => {
         outputRange: [0, 1]
     })
 
-    useEffect(()=>{ console.log(HeightInterpolate)},[HeightInterpolate])
     const weeksDay = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     return (
         <View style={styles.innerCont}>
