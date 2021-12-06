@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Animated} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Animated, Vibration} from 'react-native';
 import {Switch} from "react-native-paper";
 import Database from "./functions/Database";
 
@@ -14,16 +14,40 @@ const Item = (props) => {
         inputRange: [0, 1],
         outputRange: [0, 1]
     })
+    useEffect(() => {
+        let hours = props.el.hour.substring(0, 2)
+        if (hours[0] === '0') hours = hours[1]
+        let minutes = props.el.hour.substring(3, 6)
+        if (minutes[0] === '0') minutes = minutes[1]
 
+
+        const interval = setInterval(() => {
+            const d = new Date();
+            if(d.getMinutes() === parseInt(minutes) && d.getHours() === parseInt(hours) && props.el.vibrate === 1){
+                Vibration.vibrate()
+            }
+            else {
+                console.log(`Date: ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`)
+                console.log(`Hours: ${hours}:${minutes}`)
+            }
+        }, 1000)
+    }, [])
     const weeksDay = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     return (
         <View style={styles.innerCont}>
-            <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
+            <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 10}}>
                 <View><Text style={styles.subText}>{props.el.hour} </Text></View>
-                <View><Switch value={props.el.active === 1} onValueChange={() => {
-                    Database.setValue(props.el.id, 'active', props.el.active === 1 ? 0 : 1)
-                    props.reload()
-                }}/></View>
+                <View>
+                    <Switch value={props.el.active === 1} onValueChange={() => {
+                        Database.setValue(props.el.id, 'active', props.el.active === 1 ? 0 : 1)
+                        props.reload()
+                    }}/>
+                    <View style={{height: 10}}/>
+                    <Switch value={props.el.vibrate === 1} onValueChange={() => {
+                        Database.setValue(props.el.id, 'vibrate', props.el.vibrate === 1 ? 0 : 1)
+                        props.reload()
+                    }}/>
+                </View>
             </View>
             <View style={{paddingTop: 20, flexDirection: "row", justifyContent: "space-between"}}>
                 <TouchableOpacity style={{width: 30}} onPress={() => props.removeHandleByKey(props.el.id)}>

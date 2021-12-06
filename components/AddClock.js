@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, LogBox} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, LogBox, Vibration} from 'react-native';
 import Database from "./functions/Database";
 
 LogBox.ignoreLogs([
@@ -10,6 +10,9 @@ export default function AddClock(props) {
     const [hours, setHours] = useState(0)
     const [minutes, setMinutes] = useState(0)
     const [toggle, setToggle] = useState('hours')
+    useEffect(() => {
+        Vibration.vibrate(100)
+    }, [hours, minutes])
     return (<View style={styles.cont}>
         <View style={styles.timeCont}>
             <TouchableOpacity onPress={() => setToggle('hours')}>
@@ -57,7 +60,6 @@ export default function AddClock(props) {
         </View>
         <View style={{flex: 1.5}}/>
         <TouchableOpacity style={styles.addButton} onPress={() => {
-            console.log(`${hours}:${minutes}`)
             props.route.params.addHandle(`${hours < 10 ? 0 : ''}${hours}:${minutes < 10 ? 0 : ''}${minutes}`)
             props.navigation.pop()
         }}>

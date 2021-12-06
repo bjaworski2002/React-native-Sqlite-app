@@ -6,15 +6,14 @@ class Database {
     static createTable() {
         db.transaction(tx => {
             tx.executeSql("DROP TABLE alerts;");
-            tx.executeSql("CREATE TABLE IF NOT EXISTS alerts (id integer primary key not null, hour text, monday number, tuesday number, wednesday number, thursday number, friday number, saturday number, sunday number, active number);");
+            tx.executeSql("CREATE TABLE IF NOT EXISTS alerts (id integer primary key not null, hour text, monday number, tuesday number, wednesday number, thursday number, friday number, saturday number, sunday number, active number, vibrate number);");
 
         });
     }
     static add(value) {
-        console.log(value)
         db.transaction(
             tx => {
-                tx.executeSql(`INSERT INTO alerts (hour, monday, tuesday, wednesday, thursday, friday, saturday, sunday, active) values ("${value}", 0, 0, 1, 1, 0, 0, 0, 1)`);
+                tx.executeSql(`INSERT INTO alerts (hour, monday, tuesday, wednesday, thursday, friday, saturday, sunday, active, vibrate) values ("${value}", 0, 0, 1, 1, 0, 0, 0, 1, 1)`);
             },
         )
     }
@@ -29,7 +28,6 @@ class Database {
         const query = "SELECT * FROM alerts";
         return new Promise((resolve, reject) => db.transaction((tx) => {
             tx.executeSql(query, [], (tx, results) => {
-                //console.log(JSON.stringify(results.rows))
                 resolve(JSON.stringify(results));
             }, function (tx, error) {
                 reject(error);

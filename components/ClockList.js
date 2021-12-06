@@ -16,7 +16,7 @@ export default function ClockList(props){
         });
 
         Database.createTable();
-        Database.add('12:30')
+        Database.add('22:54')
         Database.getAll().then(all => setClocks(JSON.parse(all).rows._array))
 
     }, [])
